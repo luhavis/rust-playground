@@ -39,11 +39,26 @@ fn main() {
 
     let x: i8 = 5;
     let y: Option<i8> = Some(5);
+    let sum = x + y.unwrap();
+    println!("{}", sum);
 
-    let sum = x + y;
-    println!(sum);
+    let x: Option<i8> = Some(5);
+    let sum = x.unwrap() + y.unwrap();
+    println!("{}", sum);
 
 
+    let cent = value_in_cents(Coin::Nickel);
+    println!("{}", cent);
+
+    value_in_cents(Coin::Quarter(UsState::Alabama));
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    println!("five : {}", five.unwrap());
+    println!("six : {}", six.unwrap());
+    println!("none : {}", none.is_none());
 }
 
 #[derive(Debug)]
@@ -111,3 +126,40 @@ impl Message {
 //     Some(T),
 // }
 
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => {
+            print!("Penny!");
+            1
+        },
+        Coin::Nickel => {
+            println!("Nickel!");
+            5
+        },
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {:?}!", state);
+            25
+        },
+    }
+}
+
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
